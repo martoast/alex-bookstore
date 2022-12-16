@@ -1,13 +1,10 @@
 FROM node:alpine
 
-WORKDIR /frontend
-COPY ./package.json /frontend
-COPY ./package-lock.json /frontend
-COPY . /frontend
+RUN mkdir -p /var/www
 
-RUN npm install
+WORKDIR /var/www
 
-RUN npm run build
+COPY . /var/www
 
 # expose 5000 on container
 EXPOSE 3000
@@ -19,4 +16,4 @@ ENV NUXT_HOST=0.0.0.0
 ENV NUXT_PORT=3000
 
 # start the app
-CMD [ "npm", "start"]
+ENTRYPOINT ["sh", "/var/www/entrypoint.sh" ]

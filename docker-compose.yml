@@ -4,6 +4,8 @@ services:
     container_name: db
     platform: linux/x86_64 # M1 Mac
     image: mysql:8.0
+    volumes:
+      - my-datavolume:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: xx
       MYSQL_DATABASE: bookstore
@@ -21,15 +23,20 @@ services:
       - WAIT_HOSTS_TIMEOUT=300
       - WAIT_SLEEP_INTERVAL=30
       - WAIT_HOST_CONNECT_TIMEOUT=30
+    volumes:
+      - "./api:/app"
     ports:
       - "8080:8080"
 
   frontend:
     container_name: frontend
     build: ./frontend
+    volumes:
+      - "./frontend:/var/www"
     depends_on:
       - "api"
-    command: ["npm", "run", "start"]
     ports:
       - 3000:3000
   
+volumes:
+  my-datavolume:
