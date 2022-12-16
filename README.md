@@ -10,3 +10,4 @@ Running the app in local development
 $ docker-compose run --build
 
 
+By default you can access server via http://localhost:3000
