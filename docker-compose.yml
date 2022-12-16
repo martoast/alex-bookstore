@@ -1,0 +1,35 @@
+version: "3"
+services:
+  db:
+    container_name: db
+    platform: linux/x86_64 # M1 Mac
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: xx
+      MYSQL_DATABASE: bookstore
+    ports:
+      - 3306:3306
+
+  api:
+    container_name: api
+    build: ./api
+    depends_on:
+      - "db"
+    command: sh -c "/wait && /app/main"
+    environment:
+      - WAIT_HOSTS=db:3306
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+    ports:
+      - "8080:8080"
+
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    depends_on:
+      - "api"
+    command: ["npm", "run", "start"]
+    ports:
+      - 3000:3000
+  
