@@ -9,9 +9,11 @@ import (
 	"github.com/gorilla/mux"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/martoast/go-bookstore/pkg/routes"
+	"github.com/martoast/go-bookstore/pkg/utils"
 )
 
 func main() {
+	utils.SetupGoGuardian()
 	r := mux.NewRouter()
 	routes.RegisterRoutes(r)
 	http.Handle("/", r)
